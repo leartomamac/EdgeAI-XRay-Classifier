@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#0C447C">
 
-    <!-- دوائر الخلفية الزخرفية -->
     <View
         android:layout_width="280dp"
         android:layout_height="280dp"

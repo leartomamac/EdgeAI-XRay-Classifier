@@ -2,10 +2,12 @@ package com.example.edge_ai_classifier;
 
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.edge_ai_classifier.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         setupListeners();
         observeViewModel();
     }
-
     private void setupListeners() {
         binding.btnSelectImage.setOnClickListener(v ->
                 selectImageLauncher.launch("image/*"));
@@ -75,12 +76,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showResults(MainViewModel.UiState.Success result) {
+    private void showResults(MainViewModel.UiState.Success r) {
         binding.layoutResults.setVisibility(View.VISIBLE);
-        binding.tvPrediction.setText(result.prediction);
-        binding.tvConfidence.setText(result.confidence + "%");
-        binding.confidenceBar.setProgress(result.confidence);
+
+        // Original fields
+        binding.tvPrediction.setText(r.prediction);
+        binding.tvConfidence.setText(r.confidence + "%");
+        binding.confidenceBar.setProgress(r.confidence);
         binding.chipStatus.setVisibility(View.VISIBLE);
-        binding.chipStatus.setText(result.isPositive ? "Positive" : "Normal");
+        binding.chipStatus.setText(r.isPositive ? "Positive" : "Normal");
+
+        // Probabilities
+        binding.tvProbPneumonia.setText(r.probPneumonia + "%");
+        binding.barPneumonia.setProgress(r.probPneumonia);
+
+        binding.tvProbNormal.setText(r.probNormal + "%");
+        binding.barNormal.setProgress(r.probNormal);
+
+        // Performance
+        binding.tvInferenceTime.setText(r.inferenceTimeMs + " ms");
+        binding.tvModelSize.setText(r.modelSize);
+
+        // Memory
+        binding.tvMemoryUsed.setText(r.memoryUsedMb + " MB");
+        binding.tvMemoryAvailable.setText(r.memoryAvailableMb + " MB");
+        binding.tvMemoryPercent.setText(r.memoryUsedPercent + "%");
+        binding.memoryBar.setProgress(r.memoryUsedPercent);
     }
 }
